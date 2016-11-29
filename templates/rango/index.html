@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href='https://cdn.rawgit.com/openhiun/hangul/14c0f6faa2941116bb53001d6a7dcd5e82300c3f/nanumbarungothic.css' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="style.css">
+{% load staticfiles %}
+
+
+        <html>
+<head>
+    <title>Pyneer</title>
+</head>
+<body>
+{% block header_block %}
+<h1>PYNEER</h1> SKKU Python Acad.
+{% endblock%}
+
+<div>
+    <ul>
+    {% if user.is_authenticated %}
+    <li><a href="{% url 'auth_logout' %}">로그아웃</a> </li>
+    <li><a href="{% url 'profile' user.username %}">알림 키워드 설정</a> </li>
+    </ul>
+
+
+    {% if categories %}
+    <ul>
+        최근 올라온 공지사항
+        {% for category in categories %}
+        <li>
+            {{ category.title }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <strong>There are no categoreis present.</strong>
+    {% endif %}
+
+    {% else %}
+    <h2>원하는 공지사항 내용을<br/>알림 서비스 통해 받아보세요!</h2>
+
+    {% block body_block %}
+    <h3>로그인</h3>
+    <form id="login_form" method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        Username: <input type="text" name="username" value="" size="10"/>
+        <br/>
+        Password: <input type="password" name="password" value="" size="10"/>
+        <br/>
+        <input type="submit" value="로그인"/>
+    </form>
+    <h3>아직 회원이 아닌가요?</h3>
+    <form action="{% url 'registration_register' %}">
+        <input type="submit" value="회원가입"/>
+    </form>
+    {% endblock %}
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title %}>{{ selecteduser.username }} Profile {% endblock %}
+
+{% block body_block %}
+<h1>{{selecteduser.username}} 공지사항</h1>
+<div>
+    {% if selecteduser.username == user.username %}
+    <form method="post" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Update"/>
+    </form>
+    {% else %}
+
+    <p><strong>Keyword1:</strong><a href="{{userprofile.keyword1}}">
+        {{userprofile.keyword1}}
+    </a> </p>
+    <p><strong>Keyword2:</strong><a href="{{userprofile.keyword2}}">
+        {{userprofile.keyword2}}
+    </a> </p>
+    {% endif %}
+
+    <p>
+    {% if user_notices %}
+    <ul>
+        {% for user_n in user_notices %}
+        <li>
+            <a href="{{ user_n.url }}">{{ user_n.title }}</a>
+        </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+    <strong>There are no notices present.</strong>
+    {% endif %}
+    </p>
+</div>
+<div id="edit_profile"></div>
+{% endblock %}
